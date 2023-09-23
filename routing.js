@@ -33,31 +33,49 @@ routing.use(async (req, res, next) => {
 }); 
 
 routing.get('/createTables', async (req, res, next) => {
-    const resp = await postgres.createSlotInfo();
-    console.log(resp);
+    // const resp1 = await postgres.createSlotInfo();
+    // const resp2 = await postgres.createTokenTable();
+    // const resp3 = await postgres.createUser();
     res.send('Tables Created');
 });
   
 routing.post('/registeruser', async (req, res, next) => {
-    const body = req.body;
-    const result = await controller.registerUser(body);
-    res.send('User Registered');
+    try {
+        const body = req.body;
+        const result = await controller.registerUser(body);
+        res.send('User Registered');
+    } catch (err) {
+        console.log(err)
+        res.send('Error')
+    }
 });
 
 routing.post('/login', async (req, res, next) => {
-    const response = await controller.loginUser(req.body);
-    res.set("Authorization", response.token);
-    res.send(response);
+    try {
+        const response = await controller.loginUser(req.body);
+        res.set("Authorization", response.token);
+        res.send(response);
+    } catch (err) {
+        res.send('Error')
+    }
 });
  
 routing.post('/bookslot', async (req, res, next) => {
-    const response = await controller.insertSlotInfo(req.body);
-    res.send(response);
+    try {
+        const response = await controller.insertSlotInfo(req.body);
+        res.send(response);
+    } catch (err) {
+        res.send('Error')
+    }
 });
 
 routing.post('/checkslot', async (req, res, next) => {
-    const response = await controller.getSlotInfo(req.body);
-    res.send(response);
+    try {
+        const response = await controller.getSlotInfo(req.body);
+        res.send(response);
+    } catch (err) {
+        res.send('Error')
+    }
 });
 
 module.exports = routing

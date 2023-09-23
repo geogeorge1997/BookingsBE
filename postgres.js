@@ -3,7 +3,7 @@ const Pool = require('pg').Pool;
 const pool = new Pool({
     user: 'postgres',
     host: 'localhost',
-    database: 'gfgbackend',
+    database: 'dummy',
     password: 'postgres',
     dialect: 'postgres',
     port: 5432
@@ -25,27 +25,26 @@ pool.connect((err, client, release) => {
 })
 
 const createUser = async () => {
-    pool.query("CREATE TABLE test1(uid text, password text, role text)", 
+    pool.query("CREATE TABLE reguser(uid text, password text, role text)", 
     (err, res) => {
     console.log('Create Table Register');
     console.log(err, res);
-    // pool.end();
     });
 }
 
 const insertUser = async (uid, password, role) => {
     const result = await pool.query(
-        `INSERT INTO "test1" ("uid", "password", "role")  
+        `INSERT INTO "reguser" ("uid", "password", "role")  
          VALUES ($1, $2, $3)`, [uid, password, role]);
     return result;
 }
 
 const getUser = async (uid, password) => {
-    return pool.query('Select * from test1 WHERE uid = $1 AND password = $2 LIMIT 1', [uid, password]);
+    return pool.query('Select * from reguser WHERE uid = $1 AND password = $2 LIMIT 1', [uid, password]);
 }
 
 const createTokenTable = async () => {
-    pool.query("CREATE TABLE tokentable5(token text, uid text, expiry numeric)", 
+    pool.query("CREATE TABLE tokentable(token text, uid text, expiry numeric)", 
     (err, res) => {
     console.log('Create Token Table');
     console.log(err, res);
@@ -54,18 +53,18 @@ const createTokenTable = async () => {
 
 const insertTokenTable = async (token, uid, expiry) => {
     const result = await pool.query(
-        `INSERT INTO "tokentable5" ("token", "uid", "expiry")  
+        `INSERT INTO "tokentable" ("token", "uid", "expiry")  
          VALUES ($1, $2, $3)`, [token, uid, expiry]);
     return result;
 }
 
 const getToken = async (token) => {
-    const result = await pool.query('Select * from tokentable5 WHERE token = $1', [token]);
+    const result = await pool.query('Select * from tokentable WHERE token = $1', [token]);
     return result;
 }
 
 const createSlotInfo = async () => {
-    pool.query("CREATE TABLE slotinfo4(uidstudent text, uiddean text, time numeric)", 
+    pool.query("CREATE TABLE slotinfo(uidstudent text, uiddean text, time numeric)", 
     (err, res) => {
     console.log('Create SlotInfo');
     console.log(err, res);
@@ -74,17 +73,17 @@ const createSlotInfo = async () => {
 
 const insertSlotInfo = async (uidstudent, uiddean, time) => {
     const result = await pool.query(
-        `INSERT INTO "slotinfo4" ("uidstudent", "uiddean", "time")  
+        `INSERT INTO "slotinfo" ("uidstudent", "uiddean", "time")  
          VALUES ($1, $2, $3)`, [uidstudent, uiddean, time]);
     return result;
 }
 
 const getSlotInfoDean = async (uiddean, time) => {
-    return pool.query('Select * from slotinfo4 WHERE uiddean = $1 AND time >= $2', [uiddean, time]);
+    return pool.query('Select * from slotinfo WHERE uiddean = $1 AND time >= $2', [uiddean, time]);
 }
 
 const getSlotInfoStudent = async (uidstudent, time) => {
-    return pool.query('Select * from slotinfo4 WHERE uidstudent = $1 AND time >= $2', [uidstudent, time]);
+    return pool.query('Select * from slotinfo WHERE uidstudent = $1 AND time >= $2', [uidstudent, time]);
 }
 
 const getFun = async () => {

@@ -1,9 +1,0 @@
-unique token api - role, username, password
-apis to see free session of dean
-dean logins - see student names and session deatils
-student b logs in - see free session
-dean again logs in - process repeating
-
- psql -U postgres
- create database gfgbackend; 
- 

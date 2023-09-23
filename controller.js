@@ -47,8 +47,7 @@ const registerUser = async (body) => {
         const result = await postgres.insertUser(uid, password, role);
         return 'Success';
     } else {
-        const error = new Error('Enter All Required Params');
-        throw error;
+        return 'Enter All Required Params'
     }
 };
 
@@ -72,8 +71,7 @@ const loginUser = async (body) => {
         }
         return {token, slotTimes};
     } else {
-        const error = new Error('Enter All Required Params');
-        throw error;
+        return 'Enter All Required Params'
     }
 };
 
@@ -89,13 +87,11 @@ const insertSlotInfo = async (body) => {
             return 'Success';
         }
         else {
-            const error = new Error('Enter Available Slot');
-            throw error;
+            return 'Enter Available Slot'
         }
         
     } else {
-        const error = new Error('Enter All Required Params');
-        throw error;
+        return 'Enter All Required Params'
     }
 };
 
@@ -119,8 +115,7 @@ const getSlotInfo = async (body) => {
         ]
         return data;
     } else {
-        const error = new Error('Enter All Required Params');
-        throw error;
+        return 'Enter All Required Params'
     }
 };
 

@@ -1,0 +1,29 @@
+dean1 = {
+    "uid": "dean1",
+    "password": "dean1",
+    "role": "dean"
+}
+
+dean2 = {
+    "uid": "dean2",
+    "password": "dean2",
+    "role": "dean"
+}
+
+student1 = {
+    "uid": "student1",
+    "password": "student1",
+    "role": "student"
+}
+
+student2 = {
+    "uid": "student2",
+    "password": "student2",
+    "role": "student"
+}
+
+{
+    "uidstudent": "student2",
+    "uiddean": "dean1",
+    "time": "1695376800000"
+}
