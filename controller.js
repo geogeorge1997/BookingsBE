@@ -41,11 +41,23 @@ const getStudentSlotsDetails = async (uidstudent) => {
     return studentRows;
 }
 
+const existUser = async (uid) => {
+    const userResult = await postgres.existUser(uid);
+    if (userResult.rows.length === 0) {
+        return false
+    }
+    return true
+};
+
 const registerUser = async (body) => {
     const {uid, password, role} = body;
     if (uid && password && role) {
-        const result = await postgres.insertUser(uid, password, role);
-        return 'Success';
+        const existUserDetails = await existUser(uid)
+        if (existUserDetails) {
+            return 'User Already Exists'
+        }
+        await postgres.insertUser(uid, password, role);
+        return 'User Registered';
     } else {
         return 'Enter All Required Params'
     }
@@ -80,6 +92,11 @@ const insertSlotInfo = async (body) => {
     const slotDays = [];
     slotTimeGenerator(slotDays)
     if (uidstudent && uiddean && time) {
+        const existUserDean = await existUser(uiddean)
+        if (!existUserDean) {
+            return 'Enter proper dean details'
+        }
+
         const deanTime = await getDeanSlots(uiddean);
         if (slotDays.includes(time) && !deanTime.includes(time)) {
             const intTime = Number(time);
@@ -100,6 +117,10 @@ const getSlotInfo = async (body) => {
     const slotDays = [];
     slotTimeGenerator(slotDays)
     if (uiddean) {
+        const existUserDetails = await existUser(uiddean)
+        if (!existUserDetails) {
+            return 'Enter proper dean details'
+        }
         const deanTime = await getDeanSlots(uiddean);
         const bookedSlots = [];
         const availableSlots = [];

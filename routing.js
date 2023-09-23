@@ -6,6 +6,7 @@ const controller = require('./controller');
 routing.use(async (req, res, next) => {
     const token = req.headers.authorization;
     const path = req.originalUrl;
+    const body = req.body
     const noAuthRoutes = ['/createTables', '/registeruser', '/login']
     if (!noAuthRoutes.includes(path)) {
         let tokenExpiry;
@@ -16,7 +17,10 @@ routing.use(async (req, res, next) => {
                 tokenExpiry = tokenValidation[0].expiry;
                 const date = new Date().getTime();
                 const tokenDate = Number(tokenExpiry);
-                if (date > tokenDate) {
+                if (body.uidstudent !== tokenValidation[0].uid) {
+                    res.send('Token Mismatch');
+                }
+                else if (date > tokenDate) {
                     res.send('Token Expired');
                 } else {
                     next();
@@ -43,9 +47,8 @@ routing.post('/registeruser', async (req, res, next) => {
     try {
         const body = req.body;
         const result = await controller.registerUser(body);
-        res.send('User Registered');
+        res.send(result);
     } catch (err) {
-        console.log(err)
         res.send('Error')
     }
 });

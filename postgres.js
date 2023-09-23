@@ -43,6 +43,10 @@ const getUser = async (uid, password) => {
     return pool.query('Select * from reguser WHERE uid = $1 AND password = $2 LIMIT 1', [uid, password]);
 }
 
+const existUser = async (uid) => {
+    return pool.query('Select * from reguser WHERE uid = $1', [uid]);
+}
+
 const createTokenTable = async () => {
     pool.query("CREATE TABLE tokentable(token text, uid text, expiry numeric)", 
     (err, res) => {
@@ -93,6 +97,7 @@ const getFun = async () => {
 exports.createUser = createUser;
 exports.getUser = getUser;
 exports.insertUser = insertUser;
+exports.existUser = existUser;
 
 exports.createTokenTable = createTokenTable;
 exports.insertTokenTable = insertTokenTable;
